@@ -1,22 +1,40 @@
 package com.hatim.engine.services
 
+import com.netflix.discovery.EurekaClient
+import com.netflix.discovery.EurekaEvent
+import com.netflix.discovery.EurekaEventListener
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.ApplicationArguments
+import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
-import javax.annotation.PostConstruct
+import java.util.concurrent.atomic.AtomicInteger
 
 @Component
-class DpCalculatorsService {
+class DpCalculatorsService(@Autowired val discoveryClient: EurekaClient,
+                           private val calculatorsNbr: Int = 5,
+                           private val waitBeforeCreatingCalculator:Int = 15):
+        EurekaEventListener, ApplicationRunner {
     companion object {
         private val logger = LoggerFactory.getLogger(DpCalculatorsService::class.java)
     }
 
-    @PostConstruct
-    fun init() {
-        logger.info("Starting dp calculators")
-        repeat(5) {
-            launchDpCalculator()
+    private val attempts = AtomicInteger()
+
+    override fun onEvent(event: EurekaEvent?) {
+        val engineInstances = discoveryClient.getApplication("dpCalculator")
+        if ((engineInstances == null || engineInstances.size() < calculatorsNbr)
+                && attempts.getAndIncrement() >= waitBeforeCreatingCalculator){
+            val currentNbrOfCalculators = engineInstances?.size() ?: 0
+            val calculatorsToStart = calculatorsNbr - currentNbrOfCalculators
+            logger.info("Found only $currentNbrOfCalculators calculators, Starting $calculatorsToStart")
+            repeat(calculatorsToStart) { launchDpCalculator() }
+            attempts.set(0)
         }
-        logger.info("finished dp calculators creation")
+    }
+
+    override fun run(args: ApplicationArguments?) {
+        discoveryClient.registerEventListener(this)
     }
 
     private fun launchDpCalculator() {
