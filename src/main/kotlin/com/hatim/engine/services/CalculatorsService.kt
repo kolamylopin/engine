@@ -8,19 +8,27 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
+import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
-@Component
-class DpCalculatorsService(@Autowired val discoveryClient: EurekaClient,
-                           private val calculatorsNbr: Int = 5):
+@Service
+class CalculatorsService(@Autowired val discoveryClient: EurekaClient,
+                         private val calculatorsNbr: Int = 5) :
         EurekaEventListener, ApplicationRunner {
     companion object {
-        private val logger = LoggerFactory.getLogger(DpCalculatorsService::class.java)
+        private val logger = LoggerFactory.getLogger(CalculatorsService::class.java)
     }
 
     private var calculatorsCurrentNbr = 0
     private val initialCalculator = AtomicBoolean(true)
+    private val processBuilder: ProcessBuilder = ProcessBuilder(
+            "java -jar c:/Users/Hatim/IdeaProjects/jvm/build/libs/jvm-1.jar"
+                    .split(" "))
+
+    init {
+        processBuilder.directory(File(System.getProperty("user.home")))
+    }
 
     override fun onEvent(event: EurekaEvent?) {
         val calculatorInstances: Application? = discoveryClient.getApplication("dpCalculator")
@@ -30,7 +38,7 @@ class DpCalculatorsService(@Autowired val discoveryClient: EurekaClient,
             calculatorsCurrentNbr = updatedNbrOfCalculators
             if (calculatorsCurrentNbr < calculatorsNbr) {
                 logger.info("Found only $updatedNbrOfCalculators calculators. Starting a new one")
-                launchDpCalculator()
+                launchCalculator()
                 initialCalculator.compareAndSet(true, false)
             }
         }
@@ -40,13 +48,11 @@ class DpCalculatorsService(@Autowired val discoveryClient: EurekaClient,
         discoveryClient.registerEventListener(this)
     }
 
-    private fun launchDpCalculator() {
+    private fun launchCalculator() {
         try {
-            ProcessBuilder(
-                    "java -jar c:/Users/Hatim/IdeaProjects/jvm/build/libs/jvm-1.jar"
-                            .split(" ")).start()
+            processBuilder.start()
         } catch (e: Exception) {
-            logger.error("Could not start the dp calculator", e)
+            logger.error("Could not start the calculator", e)
         }
     }
 }
