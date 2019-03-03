@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component
 import java.util.concurrent.Executor
 
 @Component
-class OutputService(@Autowired private val executor: Executor) {
+class OutputService(@Autowired private val executor: Executor,
+                    @Autowired private val calculatorsService: CalculatorsService) {
     companion object {
+        @JvmStatic
         private val logger = LoggerFactory.getLogger(OutputService::class.java)
     }
 
@@ -18,8 +20,22 @@ class OutputService(@Autowired private val executor: Executor) {
 
     fun publish(message: Any) {
         executor.execute {
-            queueAppender.writeText(message.toString())
-            logger.info("published $message")
+            calculatorsService.instance?.id?.let {
+                val formattedMessage = "$it$$message"
+                queueAppender.writeText(formattedMessage)
+                logger.info("published $formattedMessage")
+            }
         }
     }
+
+//    @PostConstruct
+//    fun init() {
+//        Executors.newSingleThreadExecutor().submit {
+//            var counter = 1
+//            while (true) {
+//                publish(counter++)
+//                Jvm.pause(1000)
+//            }
+//        }
+//    }
 }
