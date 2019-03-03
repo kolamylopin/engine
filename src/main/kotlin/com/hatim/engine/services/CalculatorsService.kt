@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 @Service
 class CalculatorsService(@Autowired val discoveryClient: EurekaClient,
-                         private val calculatorsNbr: Int = 2) :
+                         private val calculatorsNbr: Int = 5) :
         EurekaEventListener, ApplicationRunner {
     companion object {
         @JvmStatic
