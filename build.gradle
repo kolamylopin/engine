@@ -28,15 +28,11 @@ ext {
 dependencies {
 	// Logging
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-	implementation 'com.lmax:disruptor:3.3.11'
+	implementation 'com.lmax:disruptor:3.4.2'
 
 	// Spring
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-ribbon'
 
 	// Kotlin
 	implementation 'org.jetbrains.kotlin:kotlin-reflect'
