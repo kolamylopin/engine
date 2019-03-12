@@ -1,5 +1,6 @@
 package com.hatim.engine.services
 
+import com.hatim.engine.utils.Configuration
 import com.netflix.appinfo.InstanceInfo
 import com.netflix.discovery.EurekaClient
 import com.netflix.discovery.EurekaEvent
@@ -16,17 +17,15 @@ import java.util.concurrent.atomic.AtomicInteger
 
 @Service
 class CalculatorsService(@Autowired val discoveryClient: EurekaClient,
-                         private val calculatorsNbr: Int = 5) :
+                         @Autowired val configuration: Configuration) :
         EurekaEventListener, ApplicationRunner {
     companion object {
         @JvmStatic
         private val logger = LoggerFactory.getLogger(CalculatorsService::class.java)
-
-        @JvmStatic
-        private val processBuilder: ProcessBuilder = ProcessBuilder(
-                "java -jar c:/Users/Hatim/IdeaProjects/jvm/build/libs/jvm-1.jar"
-                        .split(" "))
     }
+
+    private val processBuilder =
+            ProcessBuilder("java -jar ${configuration.calculatorPath}".split(" "))
 
     private var calculatorsCurrentNbr = 0
     private val initialCalculator = AtomicBoolean(true)
@@ -47,12 +46,12 @@ class CalculatorsService(@Autowired val discoveryClient: EurekaClient,
     }
 
     override fun onEvent(event: EurekaEvent?) {
-        val dpCalculatorApplication: Application? = discoveryClient.getApplication("dpCalculator")
+        val dpCalculatorApplication: Application? = discoveryClient.getApplication(configuration.calculatorName)
         val updatedNbrOfCalculators = dpCalculatorApplication?.size() ?: 0
 
         if (calculatorsCurrentNbr != updatedNbrOfCalculators || initialCalculator.get()) {
             calculatorsCurrentNbr = updatedNbrOfCalculators
-            if (calculatorsCurrentNbr < calculatorsNbr) {
+            if (calculatorsCurrentNbr < configuration.calculatorsNumber) {
                 logger.info("Found only $updatedNbrOfCalculators calculators. Starting a new one")
                 launchCalculator()
                 initialCalculator.compareAndSet(true, false)

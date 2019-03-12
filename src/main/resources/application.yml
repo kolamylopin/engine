@@ -10,3 +10,9 @@ eureka:
     preferIpAddress: true
     lease-renewal-interval-in-seconds: 1
     lease-expiration-duration-in-seconds: 3
+application:
+  output-queue: D:/queues
+  calculator:
+    name: dpCalculator
+    path: c:/Users/Hatim/IdeaProjects/jvm/build/libs/jvm-1.jar
+    number: 5
