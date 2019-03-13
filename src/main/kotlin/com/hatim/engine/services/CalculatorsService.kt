@@ -41,6 +41,9 @@ class CalculatorsService(@Autowired val discoveryClient: EurekaClient,
             return null
         }
 
+    val waitBetweenInstanceUpdates
+        get() = configuration.secondsBetweenRegistryFetch
+
     init {
         processBuilder.directory(File(System.getProperty("user.home")))
     }

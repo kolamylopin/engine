@@ -12,7 +12,7 @@
             <Policies>
                 <OnStartupTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy
-                        size="5 MB"/>
+                        size="5MB"/>
             </Policies>
         </RollingFile>
     </Appenders>

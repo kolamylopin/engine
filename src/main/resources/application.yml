@@ -12,6 +12,7 @@ eureka:
     lease-expiration-duration-in-seconds: 3
 application:
   output-queue: D:/queues
+  messages-queue-size: 1000000
   calculator:
     name: dpCalculator
     path: c:/Users/Hatim/IdeaProjects/jvm/build/libs/jvm-1.jar
