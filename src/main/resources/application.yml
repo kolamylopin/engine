@@ -13,6 +13,7 @@ eureka:
 application:
   output-queue: D:/queues
   messages-queue-size: 1000000
+  wait-for-calculator-in-sec: 60
   calculator:
     name: dpCalculator
     path: c:/Users/Hatim/IdeaProjects/jvm/build/libs/jvm-1.jar

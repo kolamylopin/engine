@@ -10,4 +10,8 @@ data class Configuration(
         @Value("\${application.calculator.number}") val calculatorsNumber: Int,
         @Value("\${application.output-queue}") val outputQueue: String,
         @Value("\${application.messages-queue-size}") val messagesQueueSize: Int,
-        @Value("\${eureka.client.registry-fetch-interval-seconds}") val secondsBetweenRegistryFetch: Long)
+        @Value("\${eureka.client.registry-fetch-interval-seconds}") val secondsBetweenRegistryFetch: Long,
+        @Value("\${application.wait-for-calculator-in-sec}") private val waitForCalculatorInSec: Long) {
+
+    val waitForCalculatorInMs = 1000 * waitForCalculatorInSec
+}
