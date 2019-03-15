@@ -24,7 +24,7 @@ class CalculatorsService(@Autowired val discoveryClient: EurekaClient,
     }
 
     private val processBuilder =
-            ProcessBuilder("java -jar ${configuration.calculatorPath}".split(" "))
+            ProcessBuilder("java -DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -jar ${configuration.calculatorPath}".split(" "))
 
     private var calculatorInstances: List<InstanceInfo> = emptyList()
     private val instancesRetrievalCounter = AtomicInteger()

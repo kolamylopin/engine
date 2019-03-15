@@ -63,7 +63,7 @@ class OutputService(@Autowired private val calculatorsService: CalculatorsServic
 
     fun addToQueue(message: PricingRequest) = messagesQueue.add(message)
 
-    // For testing reason only
+    // For testing reasons only
     @PostConstruct
     fun addMessages() {
         executorService.execute {
