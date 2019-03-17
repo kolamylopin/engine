@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component
 final data class Configuration(
         @Value("\${application.calculator.name}") val calculatorName: String,
         @Value("\${application.calculator.path}") val calculatorPath: String,
+        @Value("\${application.calculator.args}") val calculatorArgs: String,
         @Value("\${application.calculator.number}") val calculatorsNumber: Int,
         @Value("\${application.output-queue}") val outputQueue: String,
         @Value("\${application.messages-queue-size}") val messagesQueueSize: Int,

@@ -5,14 +5,14 @@ import com.hatim.engine.utils.Configuration
 import net.openhft.chronicle.queue.impl.single.SingleChronicleQueueBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
-@Component
+@Service
 class OutputService(@Autowired private val calculatorsService: CalculatorsService,
                     @Autowired private val configuration: Configuration) {
     companion object {
