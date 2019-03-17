@@ -17,5 +17,5 @@ application:
   calculator:
     name: dpCalculator
     path: c:/Users/Hatim/IdeaProjects/jvm/build/libs/jvm-1.jar
-    args: -DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
+    args: -DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -Dlog4j2.asyncLoggerWaitStrategy=Sleep
     number: 5

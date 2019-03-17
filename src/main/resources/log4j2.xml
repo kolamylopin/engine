@@ -6,8 +6,8 @@
         </Console>
         <RollingFile name="RollingFile"
                      fileName="D:/logs/engine.log"
-                     filePattern="D:/logs/engine-%d{HH-mm-dd-MM-yyyy}-%i.log.gz"
-                     ignoreExceptions="false">
+                     filePattern="D:/logs/engine-%d{HH-mm-dd-MM-yyyy}-%i.log"
+                     append="true" ignoreExceptions="false">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
             <Policies>
                 <OnStartupTriggeringPolicy/>
@@ -19,7 +19,7 @@
     <Loggers>
         <AsyncRoot level="info">
             <AppenderRef ref="RollingFile"/>
-            <AppenderRef ref="Console"/>
+            <!--<AppenderRef ref="Console"/>-->
         </AsyncRoot>
     </Loggers>
 </Configuration>
