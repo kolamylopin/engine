@@ -28,7 +28,6 @@ ext {
 dependencies {
 	// Logging
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-	implementation 'com.lmax:disruptor:3.4.2'
 
 	// Spring
 	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
@@ -40,6 +39,10 @@ dependencies {
 
 	// Chronicle
 	implementation 'net.openhft:chronicle-queue:5.17.9'
+
+	//disruptor
+	implementation 'com.conversantmedia:disruptor:1.2.15'
+	implementation 'com.lmax:disruptor:3.4.2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
