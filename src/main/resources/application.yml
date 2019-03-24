@@ -11,6 +11,7 @@ eureka:
     lease-renewal-interval-in-seconds: 1
     lease-expiration-duration-in-seconds: 3
 application:
+  input-queue: D:/engine-queue
   output-queue: D:/queues
   messages-queue-size: 1000000
   wait-for-calculator-in-sec: 60

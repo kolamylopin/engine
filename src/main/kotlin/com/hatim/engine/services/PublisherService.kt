@@ -13,11 +13,11 @@ import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
 @Service
-class OutputService(@Autowired private val calculatorsService: CalculatorsService,
-                    @Autowired private val configuration: Configuration) {
+class PublisherService(@Autowired private val calculatorsService: CalculatorsService,
+                       @Autowired private val configuration: Configuration) {
     companion object {
         @JvmStatic
-        private val logger = LoggerFactory.getLogger(OutputService::class.java)
+        private val logger = LoggerFactory.getLogger(PublisherService::class.java)
     }
 
     private val messagesQueue =
