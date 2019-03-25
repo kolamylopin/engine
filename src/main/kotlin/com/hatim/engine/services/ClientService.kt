@@ -22,8 +22,10 @@ class ClientService(@Autowired private val configuration: Configuration) : Appli
 
     private val executor = Executors.newSingleThreadExecutor()
     private val shuttingDown = AtomicBoolean(false)
+//    private val pricingResponsesBuffer = PreallocatedRingBuffer(1024) { PricingResponse() }
 
     override fun run(args: ApplicationArguments?) {
+//        pricingResponsesBuffer.initialize()
         executor.execute(this::startReader)
     }
 
@@ -32,8 +34,8 @@ class ClientService(@Autowired private val configuration: Configuration) : Appli
                 .build().use { queue ->
                     queue.createTailer().apply {
                         toEnd()
-                        // TODO: maybe use a ring buffer to reuse the created objects
                         val responseCreator = { PricingResponse() }
+//                        val responseCreator = pricingResponsesBuffer::getNext
                         while (!shuttingDown.get()) {
                             lazilyReadDocument(responseCreator)?.let { response ->
                                 when (response) {
